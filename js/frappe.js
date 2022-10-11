@@ -95,18 +95,13 @@ const buildChart = async (check, name) => {
     let nameArr = Object.values(mData.variables[1])[3];
     let idArr = Object.values(mData.variables[1])[2];
 
-    for (let i = 0; i <= 310; i++) {
-      if (nameArr[i] === name) {
+    for (let i = 0; i < 310; i++) {
+      if (nameArr[i].toLowerCase() === name.toLowerCase()) {
         console.log("find");
         const area = idArr[i];
+        console.log(area);
       }
     }
-    /*while (i !== 0) {
-      
-        i = 1;
-      }
-      r++;
-    }*/
 
     chartData = {
       labels: year,
