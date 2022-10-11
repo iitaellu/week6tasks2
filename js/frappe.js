@@ -78,6 +78,9 @@ const getData = async () => {
 };
 
 const buildChart = async (check, name) => {
+  if (name === "") {
+    name = "Whole country";
+  }
 
   if (check === "true") {
     const mData = await getMunicipality();
@@ -95,19 +98,17 @@ const buildChart = async (check, name) => {
     jsonQuery.query[1].selection.values.shift();
     jsonQuery.query[1].selection.values.push(area);
   }
-  //console.log(jsonQuery.query[1].selection.values);
+
   console.log(jsonQuery);
 
   const data = await getData();
-
-  //console.log(data);
 
   const year = Object.values(data.dimension.Vuosi.category.label);
   const info = Object.values(data.value);
 
   const chartData = {
     labels: year,
-    datasets: [{ values: info.reverse() }]
+    datasets: [{ values: info}]
   };
 
   const chart = new Chart("#chart", {
