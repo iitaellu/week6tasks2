@@ -3,7 +3,7 @@ import { Chart } from "frappe-charts/dist/frappe-charts.min.esm";
 const submitButton = document.getElementById("submit-data");
 
 let clicked = "false";
-let mun = "";
+let mun = "Whole country";
 
 //Help from course sourcecodes
 const jsonQuery = {
@@ -72,45 +72,46 @@ const getData = async () => {
   }
   const data = await res.json();
 
+  console.log(data);
+
   return data;
 };
 
 const buildChart = async (check, name) => {
-  const data = await getData();
-  let chartData = {};
-
-  const year = Object.values(data.dimension.Vuosi.category.label);
-  const info = Object.values(data.value);
-
-  if (check === "false") {
-    chartData = {
-      labels: year,
-      datasets: [{ values: info.reverse() }] //discussion with Mäntymäki
-    };
-  }
 
   if (check === "true") {
     const mData = await getMunicipality();
 
     let nameArr = Object.values(mData.variables[1])[3];
     let idArr = Object.values(mData.variables[1])[2];
+    let area;
 
     for (let i = 0; i < 310; i++) {
       if (nameArr[i].toLowerCase() === name.toLowerCase()) {
-        console.log("find");
-        const area = idArr[i];
-        console.log(area);
+        area = idArr[i];
+        name = nameArr[i];
       }
     }
-
-    chartData = {
-      labels: year,
-      datasets: [{ values: info.reverse() }]
-    };
+    jsonQuery.query[1].selection.values.shift();
+    jsonQuery.query[1].selection.values.push(area);
   }
+  //console.log(jsonQuery.query[1].selection.values);
+  console.log(jsonQuery);
+
+  const data = await getData();
+
+  //console.log(data);
+
+  const year = Object.values(data.dimension.Vuosi.category.label);
+  const info = Object.values(data.value);
+
+  const chartData = {
+    labels: year,
+    datasets: [{ values: info.reverse() }]
+  };
 
   const chart = new Chart("#chart", {
-    title: "Finland population",
+    title: name,
     data: chartData,
     type: "line",
     height: 450,
