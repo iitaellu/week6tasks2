@@ -95,8 +95,9 @@ const buildChart = async (check, name) => {
         name = nameArr[i];
       }
     }
-    jsonQuery.query[1].selection.values.shift();
-    jsonQuery.query[1].selection.values.push(area);
+    //jsonQuery.query[1].selection.values.shift();
+    //jsonQuery.query[1].selection.values.push(area);
+    jsonQuery.query[1].selection.values[0] = area;
   }
 
   console.log(jsonQuery);
