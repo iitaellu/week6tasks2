@@ -109,7 +109,7 @@ const buildChart = async (check, name) => {
 
   const chartData = {
     labels: year,
-    datasets: [{ values: info}]
+    datasets: [{ values: info }]
   };
 
   const chart = new Chart("#chart", {
@@ -138,8 +138,9 @@ async function getMunicipality() {
 
 buildChart(clicked, mun);
 
-submitButton.addEventListener("click", function () {
+submitButton.addEventListener("click", function (event) {
   mun = document.getElementById("input-area").value;
   clicked = "true";
   buildChart(clicked, mun);
+  event.preventDefault();
 });
